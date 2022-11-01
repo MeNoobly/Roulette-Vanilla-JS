@@ -1,0 +1,83 @@
+﻿body {
+    background: darkgreen;
+}
+
+.container {
+    width: 1230px;
+    padding: 0 15px;
+    margin: 0 auto;
+}
+
+.roulette__field {
+    height: 100%;
+    margin-top: 50px;
+}
+
+.roulette__list {
+    display: flex;
+    flex-grow: 1;
+    flex-shrink: 1;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+}
+
+.roulette__item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    height: 150px;
+    cursor: pointer; 
+    width: 100%; 
+    font-size: 25px;
+}
+
+.roulette__green-background {
+    width: 100px;
+    padding: 4px 4px;
+    background: darkgreen;
+    border: 2px solid white;
+}
+
+/* 
+.roulette__item:not(:nth-child(12n)) {
+    margin-right: 2px;
+} */
+
+.roulette__red {
+    background-color: red;
+}
+
+.roulette__black {
+    background-color: black;
+}
+
+.roulette__bet {
+    border: 2px solid black;
+    margin-top: 20px;
+}
+
+.roulette__button {
+    border: 2px solid black;
+    height: 50px;
+    width: 50px;
+    cursor: pointer;
+}
+
+.roulette__form-div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.roulette__money {
+    color: white;
+    font-size: 50px;
+}
+
+.roulette__money-bet {
+    margin-top: 20px;
+    color: white;
+    font-size: 50px;
+}

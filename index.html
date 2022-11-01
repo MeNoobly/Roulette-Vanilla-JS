@@ -1,12 +1,30 @@
 ﻿<!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Roulete</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/normalize.css" />
+    <link rel="stylesheet" href="css/default.css" />
+    <script defer src="js/script.js"></script>
   </head>
   <body>
-    <input type="text" />
+    <div class="container">
+      <div class="roulette__form-div">
+        <form class="roulette__form" novalidate>
+          <input type="text" class="roulette__bet" />
+          <!-- <button class="roulette__button"></button> -->
+        </form>
+        <p class="roulette__money"></p>
+      </div>
+      <div class="roulette__field">
+        <ul class="roulette__list"></ul>
+      </div>
+      <div>
+        <p class="roulette__money-bet"></p>
+      </div>
+    </div>
   </body>
 </html>
