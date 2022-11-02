@@ -81,3 +81,98 @@
     color: white;
     font-size: 50px;
 }
+
+.roulette__deal-wheel {
+    /* задаём переменные блока */
+    /* размеры колеса */
+    --size: clamp(250px, 80vmin, 700px);
+    /* настройки яркости и заливки фона секторов */
+    --lg-hs: 0 3%;
+    --lg-stop: 50%;
+    --lg: linear-gradient(
+        hsl(var(--lg-hs) 0%) 0 var(--lg-stop),
+        hsl(var(--lg-hs) 20%) var(--lg-stop) 100%
+        );
+    /* добавляем позиционирование относительно других элементов */
+    position: relative;
+    /* подключаем сетку */
+    display: grid;
+    grid-gap: calc(var(--size) / 20);
+    /* выравниваем содержимое блока по центру */
+    align-items: center;
+    /* задаём имена областей внутри сетки */
+    grid-template-areas:
+        "spinner"
+        "trigger";
+    /* устанавливаем размер шрифта */
+    font-size: calc(var(--size) / 21);
+}
+
+.roulette__deal-wheel > * {
+    grid-area: spinner;
+}
+
+.roulette__deal-wheel .roulette__btn-spin {
+    grid-area: trigger;
+    justify-self: center;
+}
+
+.roulette__spinner {
+    /* добавляем относительное позиционирование */
+    position: relative;
+    /* подключаем сетку */
+    display: grid;
+    /* выравниваем всё по центру */
+    align-items: center;
+    /* добавляем элемент в сетку */
+    grid-template-areas: "spinner";
+    /* устанавливаем размеры */
+    width: var(--size);
+    height: var(--size);
+    /* поворачиваем элемент  */
+    transform: rotate(calc(var(--rotate, 25) * 1deg));
+    /* рисуем круглую обводку, а всё, что не поместится, — будет скрыто за кругом */
+    border-radius: 50%;
+}
+
+.roulette__spinner * {
+    grid-area: spinner;
+}
+
+.roulette__prize {
+    /* включаем «гибкую» вёрстку */
+    display: flex;
+    align-items: center;
+    /* задаём отступы от краёв блока */
+    padding: 0 calc(var(--size) / 6) 0 calc(var(--size) / 20);
+    /* устанавливаем размеры */
+    width: 50%;
+    height: 50%;
+    /* устанавливаем координаты, относительно которых будем вращать текст */
+    transform-origin: center right;
+    /* поворачиваем текст */
+    transform: rotate(var(--rotate));
+    /* запрещаем пользователю выделять мышкой текст на секторах */
+    user-select: none;
+}
+
+.roulette__btn-spin {
+    color: white;
+    background: black;
+    border: none;
+    /* берём размер шрифта такой же, как в колесе */
+    font-size: inherit;
+    /* добавляем отступы от текста внутри кнопки */
+    padding: 0.9rem 2rem 1rem;
+    /* скругляем углы */
+    border-radius: 0.5rem;
+    /* меняем внешний вид курсора над кнопкой на руку*/
+    cursor: pointer;
+}
+
+.roulette__btn-spin:disabled {
+    /* меняем внешний вид курсора */
+    cursor: progress;
+    /* делаем кнопку полупрозрачной */
+    opacity: 0.25;
+}
