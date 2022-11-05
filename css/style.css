@@ -62,15 +62,26 @@
 
 .roulette__red {
     background-color: red;
+    transition: background-color .3s cubic-bezier(.48,.62,.64,.9);
+}
+
+.roulette__red:hover {
+    background-color: rgb(105, 1, 1);
 }
 
 .roulette__black {
     background-color: black;
+    transition: background-color .3s cubic-bezier(.48,.62,.64,.9);
+}
+
+.roulette__black:hover {
+    background-color: rgb(74, 74, 74);
 }
 
 .roulette__bet {
     border: 2px solid black;
     margin-top: 20px;
+    font-size: 50px;
 }
 
 .roulette__button {
@@ -92,6 +103,12 @@
 }
 
 .roulette__money-bet {
+    margin-top: 20px;
+    color: white;
+    font-size: 50px;
+}
+
+.roulette__table-element {
     margin-top: 20px;
     color: white;
     font-size: 50px;
@@ -364,7 +381,7 @@
 
 .item-text {
   color: white;
-  transform: translateY(5px);
+  transform: translateY(7px);
 }
 /* настраиваем анимацию текста на выпавшем секторе по кадрам */
 @keyframes selected {
