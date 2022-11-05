@@ -9,30 +9,62 @@
     <link rel="stylesheet" href="css/normalize.css" />
     <link rel="stylesheet" href="css/default.css" />
     <script defer src="js/script.js"></script>
-    <script defer src="js/wheel.js"></script>
   </head>
   <body>
     <div class="container">
       <div class="roulette__form-div">
-        <form class="roulette__form" novalidate>
-          <input type="text" class="roulette__bet" />
-          <!-- <button class="roulette__button"></button> -->
-        </form>
-        <p class="roulette__money"></p>
+        <div>
+          <p class="roulette__money"></p>
+          <p class="roulette__win-number"></p>
+        </div>
       </div>
-      <div class="roulette__deal-wheel">
-        <ul class="roulette__spinner"></ul>
-        <div class="roulette__ticker"></div>
-        <button class="roulette__btn-spin">Крутить</button>
+      <div class="deal-wheel">
+        <!-- блок с призами -->
+        <ul class="spinner"></ul>
+        <!-- язычок барабана -->
+        <div class="ticker"></div>
+        <!-- кнопка -->
+        <button class="btn-spin">Испытай удачу</button>
+        <div class="circle"></div>
+        <div class="circle-two"></div>
+        <div class="circle-three"></div>
+        <div class="circle-four"></div>
       </div>
       <div class="roulette__field">
-        <ul class="roulette__list"></ul>
+        <div class="roulette__div-zero">
+          <p class="roulette__p-zero">0</p>
+        </div>
+        <div>
+          <ul class="roulette__list"></ul>
+          <div class="roulette__central-first">
+            <p class="roulette__p-central-first">1st 12</p>
+            <p class="roulette__p-central-first">2nd 12</p>
+            <p class="roulette__p-central-first">3rd 12</p>
+          </div>
+          <div class="roulette__central-second">
+            <p class="roulette__p-central-second">1 - 18</p>
+            <p class="roulette__p-central-second">Even</p>
+            <p class="roulette__p-central-second" style="background: red"></p>
+            <p class="roulette__p-central-second" style="background: black"></p>
+            <p class="roulette__p-central-second">Odd</p>
+            <p class="roulette__p-central-second">19-36</p>
+          </div>
+        </div>
+        <div class="roulette__right-side">
+          <div class="roulette__div-right-side">
+            <p class="roulette__p-right-side">2 to 1</p>
+          </div>
+          <div class="roulette__div-right-side">
+            <p class="roulette__p-right-side">2 to 1</p>
+          </div>
+          <div class="roulette__div-right-side">
+            <p class="roulette__p-right-side">2 to 1</p>
+          </div>
+        </div>
       </div>
       <div>
         <p class="roulette__money-bet"></p>
       </div>
-      <img src="img/1.jpg" alt="" />
-      <img src="img/2.jpeg" alt="" />
     </div>
   </body>
 </html>
