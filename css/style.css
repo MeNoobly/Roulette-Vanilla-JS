@@ -102,7 +102,8 @@
     font-size: 50px;
 }
 
-.roulette__money-bet {
+.roulette__money-bet,
+.roulette__bet-state {
     margin-top: 20px;
     color: white;
     font-size: 50px;

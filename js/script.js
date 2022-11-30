@@ -2,62 +2,75 @@
 
 (function() {
 
+
+    // объект для рулетки
+
+
     const roulette = {
         
-        money: 1000,
-        amountBet: 0,
-        bet: [],
-        values: {
+        money: 1000, // все деньги
+        amountBet: 0, // сумма ставки
+        bet: [], // ставка
+        values: { // различные значения рулетки
+            // значения в месте выставления ставки
             values: [3, 6, 9, 12, 15, 18, 21, 24, 27, 30, 33, 36, 2, 5, 8, 11, 14, 17, 20, 23, 26, 29, 32, 35, 1, 4, 7, 10, 13, 16, 19, 22, 25, 28, 31, 34],
+            // значения колеса
             wheelValues: [0, 32, 15, 19, 4, 21, 2, 25, 17, 34, 6, 27, 13, 36, 11, 30, 8, 23, 10, 5, 24, 16, 33, 1, 20, 14, 31, 9, 22, 18, 29, 7, 28, 12, 35, 3, 26],
+            // какого цвета будет колесо
             green: [0],
             red: [1, 3, 5, 7, 9, 12, 14, 16, 18, 19, 21, 23, 25, 27, 30, 32, 34, 36],
             black: [2, 4, 6, 8, 10, 11, 13, 15, 17, 20, 22, 24, 26, 28, 29, 31, 33, 35],
         },
 
-        generateRandomNumber() {
-            let number = Math.round(Math.random() * 36);
+        generateRandomNumber() { // метод с генерацией рандомных чисел
+            let number = Math.round(Math.random() * 36); // генерация рандомного числа от 0 до 36
+            // какого цвета ячейка генерируемого числа
             let color = "black";
             if (this.values.green.includes(number)) {
                 color = "green";
             } else if (this.values.red.includes(number)) {
                 color = "red";
             }
-            return number + " " + color;
+            return number + " " + color; // возвращаем номер ячейки и её цвет
         },
 
-        setBet(context, domElement) {
+        setBet(context, domElement) { // процесс выставления ставки
           return function () {
+            // ищем нужные нам поля
             let rouletteBetInput = document.querySelector(".roulette__bet");
             let rouletteBetP = document.querySelector(".roulette__money-bet");
             let rouletteMoneyP = document.querySelector(".roulette__money");
             let rouletteResult = document.querySelector(".roulette__result");
             let rouletteTableElement = document.createElement("p");
 
-            rouletteBetP.textContent = `Общая сумма ставки: ${context.amountBet + Number(rouletteBetInput.value)}`;
-            context.amountBet += Number(rouletteBetInput.value);
-            context.money -= +rouletteBetInput.value;
-            rouletteMoneyP.textContent = context.money;
+            
+            rouletteBetP.textContent = `Общая сумма ставки: ${context.amountBet + Number(rouletteBetInput.value)}`; // прописываем общую сумму ставки
+            context.amountBet += Number(rouletteBetInput.value); // записываем общую сумму ставки
+            context.money -= +rouletteBetInput.value; // из наших денег вычитаем сумму ставки
+            rouletteMoneyP.textContent = context.money; // печатаем, сколько денег у нас осталось
 
+            // в массив всех ставок заносим число, на которое поставили и сумму ставки
             context.bet.push(
               {
-                [domElement.id]: +rouletteBetInput.value
+                [domElement.id]: +rouletteBetInput.value 
               });
 
-            rouletteTableElement.textContent = `Ставка на ${domElement.id}, сумма ставки ${rouletteBetInput.value}`;
-            rouletteBetInput.value = "";
-            rouletteResult.classList.add("roulette__table-element");
-            rouletteResult.append(rouletteTableElement);
+            rouletteTableElement.textContent = `Ставка на ${domElement.id}, сумма ставки ${rouletteBetInput.value}`; // выводим то, на что поставили
+            rouletteBetInput.value = ""; // очищаем поле со ставками
+            rouletteResult.classList.add("roulette__table-element"); // добавляем стили к результату ставки
+            rouletteResult.append(rouletteTableElement); // добавляем элемент в DOM
           };
         },
 
         createRouletteApp() {
+            // ищем DOM элементы
             let rouletteItems = document.querySelectorAll(".roulette__item");
             let rouletteList = document.querySelector(".roulette__list");
             let rouletteMoneyP = document.querySelector(".roulette__money");
             let rouletteField = document.querySelector(".roulette__field");
             let li, div, p;
 
+            // добавляем значения и айди на каждый элемент
             p = document.querySelector(".roulette__div-zero");
             p.addEventListener("click", this.setBet(this, p));
             p.id = "0";
@@ -86,10 +99,16 @@
         },
     };
 
+
+
+    // загатовка для колеса
+
+
     roulette.createRouletteApp();
 
     let prizes = [];
     
+    // в массив prizes записываем все значения рулетки, чтобы нанести их на колесо
     roulette.values.wheelValues.forEach(item => {
         let colorOfElement;
         if (roulette.values.red.includes(+item)) {
@@ -106,9 +125,14 @@
         });
       }
     );
-    prizes = prizes.reverse();
 
-     // создаём переменные для быстрого доступа ко всем объектам на странице — блоку в целом, колесу, кнопке и язычку
+    prizes = prizes.reverse();
+    
+
+    // создание нужных переменных
+
+
+    // создаём переменные для быстрого доступа ко всем объектам на странице — блоку в целом, колесу, кнопке и язычку
     const wheel = document.querySelector(".deal-wheel");
     const spinner = wheel.querySelector(".spinner");
     const trigger = wheel.querySelector(".btn-spin");
@@ -133,6 +157,10 @@
     // переменная для текстовых подписей
     let prizeNodes;
 
+
+    // все нужные функции
+
+
     // расставляем текст по секторамs
     const createPrizeNodes = () => {
       // обрабатываем каждую подпись
@@ -152,14 +180,6 @@
         );
       });
     };
-
-    function winOrLoose(position) {
-
-      let setValues = roulette.bet.map(item => Object.keys(item)[0]);
-      console.log(setValues);
-      console.log(roulette.bet);
-      console.log(position);
-    }
 
     // рисуем разноцветные секторы
     const createConicGradient = () => {
@@ -231,6 +251,28 @@
       winOrLoose(Array.from(prizeNodes[selected].childNodes)[1].textContent);
     };
 
+    // функция победы или поражения
+    function winOrLoose(position) {
+
+      let setValues = roulette.bet.map(item => Object.keys(item)[0]);
+      let rouletteState = document.querySelector(".roulette__bet-state");
+      let winCount;
+
+      if (!setValues.includes(position)) {
+        rouletteState.textContent = `Вы проиграли: ${roulette.amountBet}`;
+      } else {
+        
+      }
+
+      console.log(setValues);
+      console.log(roulette.bet);
+      console.log(position);
+    }
+    
+
+    // события кнопок
+
+
     // отслеживаем нажатие на кнопку
     trigger.addEventListener("click", () => {
       // делаем её недоступной для нажатия
@@ -265,6 +307,9 @@
       trigger.disabled = false;
     });
 
-    // подготавливаем всё к первому запуску
+
+    // запуск 
+
+
     setupWheel();
 })(); 
