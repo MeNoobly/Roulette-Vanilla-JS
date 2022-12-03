@@ -57,7 +57,35 @@
 
             rouletteTableElement.textContent = `Ставка на ${domElement.id}, сумма ставки ${rouletteBetInput.value}`; // выводим то, на что поставили
             rouletteBetInput.value = ""; // очищаем поле со ставками
-            rouletteResult.classList.add("roulette__table-element"); // добавляем стили к результату ставки
+            rouletteTableElement.classList.add("roulette__table-element"); // добавляем стили к результату ставки
+            rouletteResult.append(rouletteTableElement); // добавляем элемент в DOM
+          };
+        },
+
+        setOtherBet(context, domElement) {
+          return function () {
+            // ищем нужные нам поля
+            let rouletteBetInput = document.querySelector(".roulette__bet");
+            let rouletteBetP = document.querySelector(".roulette__money-bet");
+            let rouletteMoneyP = document.querySelector(".roulette__money");
+            let rouletteResult = document.querySelector(".roulette__result");
+            let rouletteTableElement = document.createElement("p");
+
+            
+            rouletteBetP.textContent = `Общая сумма ставки: ${context.amountBet + Number(rouletteBetInput.value)}`; // прописываем общую сумму ставки
+            context.amountBet += Number(rouletteBetInput.value); // записываем общую сумму ставки
+            context.money -= +rouletteBetInput.value; // из наших денег вычитаем сумму ставки
+            rouletteMoneyP.textContent = context.money; // печатаем, сколько денег у нас осталось
+
+            // в массив всех ставок заносим число, на которое поставили и сумму ставки
+            context.bet.push(
+              {
+                [domElement.id]: +rouletteBetInput.value 
+              });
+
+            rouletteTableElement.textContent = `Ставка на ${domElement.id}, сумма ставки ${rouletteBetInput.value}`; // выводим то, на что поставили
+            rouletteBetInput.value = ""; // очищаем поле со ставками
+            rouletteTableElement.classList.add("roulette__table-element"); // добавляем стили к результату ставки
             rouletteResult.append(rouletteTableElement); // добавляем элемент в DOM
           };
         },
@@ -67,7 +95,6 @@
             let rouletteItems = document.querySelectorAll(".roulette__item");
             let rouletteList = document.querySelector(".roulette__list");
             let rouletteMoneyP = document.querySelector(".roulette__money");
-            let rouletteField = document.querySelector(".roulette__field");
             let li, div, p;
 
             // добавляем значения и айди на каждый элемент
@@ -248,33 +275,52 @@
     const selectPrize = () => {
       const selected = Math.floor(rotation / prizeSlice);
       prizeNodes[selected].classList.add(selectedClass);
-      winOrLoose(Array.from(prizeNodes[selected].childNodes)[1].textContent);
+      winOrLoose(+Array.from(prizeNodes[selected].childNodes)[1].textContent);
     };
 
     // функция победы или поражения
     function winOrLoose(position) {
 
-      let setValues = roulette.bet.map(item => Object.keys(item)[0]);
+      let setValues = roulette.bet.map(item => +Object.keys(item)[0]);
       let rouletteState = document.querySelector(".roulette__bet-state");
-      let winCount;
-
+      let amountOfWin = 0;
+      
       if (!setValues.includes(position)) {
         rouletteState.textContent = `Вы проиграли: ${roulette.amountBet}`;
       } else {
-        
+        for (let item of setValues) {
+          if (item === position) {
+            for (let element of roulette.bet) {
+              console.log(+Object.keys(element)[0], position);
+              if (+Object.keys(element)[0] === position) {
+                amountOfWin += (+Object.values(element)[0] * 36);
+              }
+            }
+          }
+        }
+        rouletteState.textContent = `Вы выиграли ${amountOfWin}`;
       }
-
-      console.log(setValues);
-      console.log(roulette.bet);
-      console.log(position);
+      console.log(amountOfWin);
+      roulette.bet = [];
     }
     
+    //функция очищения элементов, после прокрутки колеса
+    function clearElements() {
+      let rouletteBetP = document.querySelector(".roulette__money-bet");
+      let rouletteTableElement = document.querySelectorAll(".roulette__table-element");
 
+      rouletteBetP.textContent = "Общая сумма ставки: 0"; // прописываем общую сумму ставки
+      rouletteTableElement.forEach(e => e.remove()); // очищаем список всех ставок
+
+      roulette.amountBet = 0; // очищаем сумму ставок
+      
+    }
     // события кнопок
 
 
     // отслеживаем нажатие на кнопку
     trigger.addEventListener("click", () => {
+
       // делаем её недоступной для нажатия
       trigger.disabled = true;
       // задаём начальное вращение колеса
@@ -287,8 +333,10 @@
       spinner.style.setProperty("--rotate", rotation);
       // возвращаем язычок в горизонтальную позицию
       ticker.style.animation = "none";
+
+
       // запускаем анимацию вращение
-      runTickerAnimation(); 
+      runTickerAnimation();
     });
 
     // отслеживаем, когда закончилась анимация вращения колеса
@@ -305,6 +353,7 @@
       spinner.style.setProperty("--rotate", rotation);
       // делаем кнопку снова активной
       trigger.disabled = false;
+      clearElements();
     });
 
 

@@ -1,4 +1,9 @@
-﻿body {
+﻿* {
+  font-family: 'Zen Dots', cursive;
+  font-size: 22px;
+}
+
+body {
     background: darkgreen;
 }
 
@@ -34,7 +39,7 @@
     height: 150px;
     cursor: pointer; 
     width: 100%; 
-    font-size: 50px;
+    font-size: 40px;
 }
 
 .roulette__green-background {
@@ -57,7 +62,7 @@
 
 .roulette__p-zero {
     color: white;
-    font-size: 50px;
+    font-size: 40px;
 }
 
 .roulette__red {
@@ -81,7 +86,7 @@
 .roulette__bet {
     border: 2px solid black;
     margin-top: 20px;
-    font-size: 50px;
+    font-size: 40px;
 }
 
 .roulette__button {
@@ -99,25 +104,25 @@
 
 .roulette__money {
     color: white;
-    font-size: 50px;
+    font-size: 40px;
 }
 
 .roulette__money-bet,
 .roulette__bet-state {
     margin-top: 20px;
     color: white;
-    font-size: 50px;
+    font-size: 40px;
 }
 
 .roulette__table-element {
     margin-top: 20px;
     color: white;
-    font-size: 50px;
+    font-size: 40px;
 }
 
 .roulette__win-number {
     color: white;
-    font-size: 50px;
+    font-size: 40px;
 }
 
 .roulette__central-first {
