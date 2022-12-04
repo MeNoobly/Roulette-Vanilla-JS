@@ -8,12 +8,16 @@
 
     const roulette = {
         
-        money: 1000, // все деньги
+        money: 100000, // все деньги
         amountBet: 0, // сумма ставки
         bet: [], // ставка
+        extendedBet: [],
         values: { // различные значения рулетки
             // значения в месте выставления ставки
             values: [3, 6, 9, 12, 15, 18, 21, 24, 27, 30, 33, 36, 2, 5, 8, 11, 14, 17, 20, 23, 26, 29, 32, 35, 1, 4, 7, 10, 13, 16, 19, 22, 25, 28, 31, 34],
+            valuesFirstRow: [3, 6, 9, 12, 15, 18, 21, 24, 27, 30, 33, 36],
+            valuesSecondRow: [2, 5, 8, 11, 14, 17, 20, 23, 26, 29, 32, 35],
+            valuesThirdRow: [1, 4, 7, 10, 13, 16, 19, 22, 25, 28, 31, 34],
             // значения колеса
             wheelValues: [0, 32, 15, 19, 4, 21, 2, 25, 17, 34, 6, 27, 13, 36, 11, 30, 8, 23, 10, 5, 24, 16, 33, 1, 20, 14, 31, 9, 22, 18, 29, 7, 28, 12, 35, 3, 26],
             // какого цвета будет колесо
@@ -43,7 +47,6 @@
             let rouletteResult = document.querySelector(".roulette__result");
             let rouletteTableElement = document.createElement("p");
 
-            
             rouletteBetP.textContent = `Общая сумма ставки: ${context.amountBet + Number(rouletteBetInput.value)}`; // прописываем общую сумму ставки
             context.amountBet += Number(rouletteBetInput.value); // записываем общую сумму ставки
             context.money -= +rouletteBetInput.value; // из наших денег вычитаем сумму ставки
@@ -70,31 +73,47 @@
             let rouletteMoneyP = document.querySelector(".roulette__money");
             let rouletteResult = document.querySelector(".roulette__result");
             let rouletteTableElement = document.createElement("p");
+            let rouletteOnExtendedBetElement = "";
+            let idOfPElement = domElement.id === "roulette__div-right-side-up" ? "roulette__p-right-side-up" : domElement.id === "roulette__div-right-side-mid" ? "roulette__p-right-side-mid" : "roulette__p-right-side-down";
+            switch(idOfPElement) {
+              case "roulette__p-right-side-up":
+                rouletteOnExtendedBetElement = "первый ряд";
+                break;
+              case "roulette__p-right-side-mid":
+                rouletteOnExtendedBetElement = "второй ряд";
+                break;
+              case "roulette__p-right-side-down":
+                rouletteOnExtendedBetElement = "третий ряд";
+                break;
+            }
 
-            
             rouletteBetP.textContent = `Общая сумма ставки: ${context.amountBet + Number(rouletteBetInput.value)}`; // прописываем общую сумму ставки
             context.amountBet += Number(rouletteBetInput.value); // записываем общую сумму ставки
             context.money -= +rouletteBetInput.value; // из наших денег вычитаем сумму ставки
             rouletteMoneyP.textContent = context.money; // печатаем, сколько денег у нас осталось
 
             // в массив всех ставок заносим число, на которое поставили и сумму ставки
-            context.bet.push(
-              {
-                [domElement.id]: +rouletteBetInput.value 
-              });
+            context.extendedBet.push({
+                [idOfPElement]: +rouletteBetInput.value
+            });
 
-            rouletteTableElement.textContent = `Ставка на ${domElement.id}, сумма ставки ${rouletteBetInput.value}`; // выводим то, на что поставили
+            rouletteTableElement.textContent = `Ставка на ${rouletteOnExtendedBetElement}, сумма ставки ${rouletteBetInput.value}`; // выводим то, на что поставили
             rouletteBetInput.value = ""; // очищаем поле со ставками
             rouletteTableElement.classList.add("roulette__table-element"); // добавляем стили к результату ставки
             rouletteResult.append(rouletteTableElement); // добавляем элемент в DOM
           };
         },
 
+
         createRouletteApp() {
             // ищем DOM элементы
             let rouletteItems = document.querySelectorAll(".roulette__item");
             let rouletteList = document.querySelector(".roulette__list");
             let rouletteMoneyP = document.querySelector(".roulette__money");
+            let rouletteDivRightSideUp = document.getElementById("roulette__div-right-side-up");
+            let rouletteDivRightSideMid = document.getElementById("roulette__div-right-side-mid");
+            let rouletteDivRightSideDown = document.getElementById("roulette__div-right-side-down");
+            let elementsOfDivRightSide = [rouletteDivRightSideUp, rouletteDivRightSideMid, rouletteDivRightSideDown];
             let li, div, p;
 
             // добавляем значения и айди на каждый элемент
@@ -113,6 +132,8 @@
                 rouletteList.append(div);
             }
 
+            elementsOfDivRightSide.forEach(item => item.addEventListener("click", this.setOtherBet(this, item)));
+
             rouletteItems = document.querySelectorAll(".roulette__item");
 
             for (let item of rouletteItems) {
@@ -122,6 +143,7 @@
                     item.classList.add("roulette__black");
                 }
             }
+
             rouletteMoneyP.textContent = this.money;
         },
     };
@@ -280,29 +302,60 @@
 
     // функция победы или поражения
     function winOrLoose(position) {
-
+      let rouletteMoneyP = document.querySelector(".roulette__money");
       let setValues = roulette.bet.map(item => +Object.keys(item)[0]);
+      let setOtherValues = roulette.extendedBet.map(item => +Object.keys(item)[0]);
       let rouletteState = document.querySelector(".roulette__bet-state");
       let amountOfWin = 0;
       
-      if (!setValues.includes(position)) {
-        rouletteState.textContent = `Вы проиграли: ${roulette.amountBet}`;
-      } else {
-        for (let item of setValues) {
-          if (item === position) {
-            for (let element of roulette.bet) {
-              console.log(+Object.keys(element)[0], position);
-              if (+Object.keys(element)[0] === position) {
-                amountOfWin += (+Object.values(element)[0] * 36);
-              }
+      for (let item of setValues) {
+        if (item === position) {
+          for (let element of roulette.bet) {
+            if (+Object.keys(element)[0] === position) {
+              amountOfWin += (+Object.values(element)[0] * 36);
+              roulette.money += (+Object.values(element)[0] * 36);
             }
           }
         }
-        rouletteState.textContent = `Вы выиграли ${amountOfWin}`;
       }
-      console.log(amountOfWin);
+
+      if (roulette.values.valuesFirstRow.includes(position)) {
+        for (let item of roulette.extendedBet) {
+          if (Object.keys(item)[0] === "roulette__p-right-side-up") {
+            amountOfWin += (+Object.values(item)[0] * 3);
+            roulette.money += (+Object.values(item)[0] * 3);
+          }
+        }
+      } else if (roulette.values.valuesSecondRow.includes(position)) {
+        for (let item of roulette.extendedBet) {
+          if (Object.keys(item)[0] === "roulette__p-right-side-mid") {
+            amountOfWin += (+Object.values(item)[0] * 3);
+            roulette.money += (+Object.values(item)[0] * 3);
+          }
+        }
+      } else if (roulette.values.valuesThirdRow.includes(position)) {
+        for (let item of roulette.extendedBet) {
+          if (Object.keys(item)[0] === "roulette__p-right-side-down") {
+            amountOfWin += (+Object.values(item)[0] * 3);
+            roulette.money += (+Object.values(item)[0] * 3);
+          }
+        }
+      }
+
+      if (roulette.amountBet < amountOfWin) {
+        rouletteState.textContent = `Ставка - ${roulette.amountBet}, выигрыш - ${amountOfWin}`;
+      } else if (roulette.amountBet === amountOfWin) {
+        rouletteState.textContent = `Вы ничего не выиграли и ничего не потеряли`;
+      } else {
+        rouletteState.textContent = `Ставка - ${roulette.amountBet}, выигрыш - ${roulette.amountBet - amountOfWin}`;
+      }
+
       roulette.bet = [];
+      roulette.extendedBet = [];
+
+      rouletteMoneyP.textContent = roulette.money;
     }
+      
     
     //функция очищения элементов, после прокрутки колеса
     function clearElements() {

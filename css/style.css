@@ -1,6 +1,6 @@
 ﻿* {
-  font-family: 'Zen Dots', cursive;
-  font-size: 22px;
+    font-family: 'Zen Dots', cursive;
+    font-size: 22px;
 }
 
 body {
@@ -58,6 +58,12 @@ body {
     border: 2px solid white;
     justify-content: center;
     align-items: center;
+    transition: background-color .3s cubic-bezier(.48,.62,.64,.9);
+}
+
+.roulette__div-zero:hover {
+    background: rgb(3, 69, 3);
+    cursor: pointer;
 }
 
 .roulette__p-zero {
