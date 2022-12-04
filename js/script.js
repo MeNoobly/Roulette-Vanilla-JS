@@ -18,6 +18,13 @@
             valuesFirstRow: [3, 6, 9, 12, 15, 18, 21, 24, 27, 30, 33, 36],
             valuesSecondRow: [2, 5, 8, 11, 14, 17, 20, 23, 26, 29, 32, 35],
             valuesThirdRow: [1, 4, 7, 10, 13, 16, 19, 22, 25, 28, 31, 34],
+            valuesFirstTwelve: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+            valuesSecondTwelve: [13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24],
+            valuesThirdTwelve: [25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36],
+            valuesOneForEighteen: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18],
+            valuesNineteenForThirtySix: [19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36],
+            valuesEven: [2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36],
+            valuesOdd: [1, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25, 27, 29, 31, 33, 35],
             // значения колеса
             wheelValues: [0, 32, 15, 19, 4, 21, 2, 25, 17, 34, 6, 27, 13, 36, 11, 30, 8, 23, 10, 5, 24, 16, 33, 1, 20, 14, 31, 9, 22, 18, 29, 7, 28, 12, 35, 3, 26],
             // какого цвета будет колесо
@@ -74,28 +81,70 @@
             let rouletteResult = document.querySelector(".roulette__result");
             let rouletteTableElement = document.createElement("p");
             let rouletteOnExtendedBetElement = "";
-            let idOfPElement = domElement.id === "roulette__div-right-side-up" ? "roulette__p-right-side-up" : domElement.id === "roulette__div-right-side-mid" ? "roulette__p-right-side-mid" : "roulette__p-right-side-down";
-            switch(idOfPElement) {
-              case "roulette__p-right-side-up":
-                rouletteOnExtendedBetElement = "первый ряд";
-                break;
-              case "roulette__p-right-side-mid":
-                rouletteOnExtendedBetElement = "второй ряд";
-                break;
-              case "roulette__p-right-side-down":
-                rouletteOnExtendedBetElement = "третий ряд";
-                break;
-            }
 
+            if (domElement.id === "roulette__div-right-side-up" || 
+            domElement.id === "roulette__div-right-side-mid" ||
+            domElement.id === "roulette__div-right-side-down") {
+              let idOfPRightElement = domElement.id === "roulette__div-right-side-up" ? "roulette__p-right-side-up" : domElement.id === "roulette__div-right-side-mid" ? "roulette__p-right-side-mid" : "roulette__p-right-side-down";
+            
+              switch(idOfPRightElement) {
+                case "roulette__p-right-side-up":
+                  rouletteOnExtendedBetElement = "первый ряд";
+                  break;
+                case "roulette__p-right-side-mid":
+                  rouletteOnExtendedBetElement = "второй ряд";
+                  break;
+                case "roulette__p-right-side-down":
+                  rouletteOnExtendedBetElement = "третий ряд";
+                  break;
+              }
+
+              context.extendedBet.push({
+                [idOfPRightElement]: +rouletteBetInput.value
+              });
+            } else {
+              switch(domElement.id) {
+                case "roulette__p-central-first-first":
+                  rouletteOnExtendedBetElement = "числа от 1 до 12";
+                  break;
+                case "roulette__p-central-first-second":
+                  rouletteOnExtendedBetElement = "числа от 15 до 22";
+                  break;
+                case "roulette__p-central-first-third":
+                  rouletteOnExtendedBetElement = "числа от 27 до 34";
+                  break;
+                case "roulette__p-central-second-1-18":
+                  rouletteOnExtendedBetElement = "числа от 1 до 18";
+                  break;
+                case "roulette__p-central-second-even":
+                  rouletteOnExtendedBetElement = "чётные числа";
+                  break;
+                case "roulette__p-central-second-red":
+                  rouletteOnExtendedBetElement = "красные ячейки";
+                  break;
+                case "roulette__p-central-second-black":
+                  rouletteOnExtendedBetElement = "чёрные ячейки";
+                  break;
+                case "roulette__p-central-second-odd":
+                  rouletteOnExtendedBetElement = "нечётные числа";
+                  break;
+                case "roulette__p-central-second-19-36":
+                  rouletteOnExtendedBetElement = "числа от 19 до 36";
+                  break;
+              }
+
+              context.extendedBet.push({
+                [domElement.id]: +rouletteBetInput.value
+              });
+            }
+            
             rouletteBetP.textContent = `Общая сумма ставки: ${context.amountBet + Number(rouletteBetInput.value)}`; // прописываем общую сумму ставки
             context.amountBet += Number(rouletteBetInput.value); // записываем общую сумму ставки
             context.money -= +rouletteBetInput.value; // из наших денег вычитаем сумму ставки
             rouletteMoneyP.textContent = context.money; // печатаем, сколько денег у нас осталось
 
             // в массив всех ставок заносим число, на которое поставили и сумму ставки
-            context.extendedBet.push({
-                [idOfPElement]: +rouletteBetInput.value
-            });
+            
 
             rouletteTableElement.textContent = `Ставка на ${rouletteOnExtendedBetElement}, сумма ставки ${rouletteBetInput.value}`; // выводим то, на что поставили
             rouletteBetInput.value = ""; // очищаем поле со ставками
@@ -103,6 +152,7 @@
             rouletteResult.append(rouletteTableElement); // добавляем элемент в DOM
           };
         },
+
 
 
         createRouletteApp() {
@@ -113,7 +163,19 @@
             let rouletteDivRightSideUp = document.getElementById("roulette__div-right-side-up");
             let rouletteDivRightSideMid = document.getElementById("roulette__div-right-side-mid");
             let rouletteDivRightSideDown = document.getElementById("roulette__div-right-side-down");
-            let elementsOfDivRightSide = [rouletteDivRightSideUp, rouletteDivRightSideMid, rouletteDivRightSideDown];
+            let roulettePCentralFirstFirst = document.getElementById("roulette__p-central-first-first");
+            let roulettePCentralFirstSecond = document.getElementById("roulette__p-central-first-second");
+            let roulettePCentralFirstThird = document.getElementById("roulette__p-central-first-third");
+            let roulettePCentralSecondOneToEighteen = document.getElementById("roulette__p-central-second-1-18");
+            let roulettePCentralSecondEven = document.getElementById("roulette__p-central-second-even");
+            let roulettePCentralSecondRed = document.getElementById("roulette__p-central-second-red");
+            let roulettePCentralSecondBlack = document.getElementById("roulette__p-central-second-black");
+            let roulettePCentralSecondOdd = document.getElementById("roulette__p-central-second-odd");
+            let roulettePCentralSecondNineteenToThirhtySix = document.getElementById("roulette__p-central-second-19-36");
+            let elementsOfOtherBet = [rouletteDivRightSideUp, rouletteDivRightSideMid, rouletteDivRightSideDown, 
+              roulettePCentralFirstFirst, roulettePCentralFirstSecond, roulettePCentralFirstThird, roulettePCentralSecondOneToEighteen,
+              roulettePCentralSecondEven, roulettePCentralSecondRed, roulettePCentralSecondBlack, 
+              roulettePCentralSecondOdd, roulettePCentralSecondNineteenToThirhtySix];
             let li, div, p;
 
             // добавляем значения и айди на каждый элемент
@@ -132,7 +194,7 @@
                 rouletteList.append(div);
             }
 
-            elementsOfDivRightSide.forEach(item => item.addEventListener("click", this.setOtherBet(this, item)));
+            elementsOfOtherBet.forEach(item => item.addEventListener("click", this.setOtherBet(this, item)));
 
             rouletteItems = document.querySelectorAll(".roulette__item");
 
@@ -342,12 +404,81 @@
         }
       }
 
+      if (roulette.values.valuesFirstTwelve.includes(position)) {
+        for (let item of roulette.extendedBet) {
+          if (Object.keys(item)[0] === "roulette__p-central-first-first") {
+            amountOfWin += (+Object.values(item)[0] * 3);
+            roulette.money += (+Object.values(item)[0] * 3);
+          }
+        }
+      } else if (roulette.values.valuesSecondTwelve.includes(position)) {
+        for (let item of roulette.extendedBet) {
+          if (Object.keys(item)[0] === "roulette__p-central-first-second") {
+            amountOfWin += (+Object.values(item)[0] * 3);
+            roulette.money += (+Object.values(item)[0] * 3);
+          }
+        }
+      } else if (roulette.values.valuesThirdTwelve.includes(position)) {
+        for (let item of roulette.extendedBet) {
+          if (Object.keys(item)[0] === "roulette__p-central-first-third") {
+            amountOfWin += (+Object.values(item)[0] * 3);
+            roulette.money += (+Object.values(item)[0] * 3);
+          }
+        }
+      }
+
+      if (roulette.values.valuesOneForEighteen.includes(position)) {
+        for (let item of roulette.extendedBet) {
+          if (Object.keys(item)[0] === "roulette__p-central-second-1-18") {
+            amountOfWin += (+Object.values(item)[0] * 2);
+            roulette.money += (+Object.values(item)[0] * 2);
+          }
+        }
+      } else if (roulette.values.valuesNineteenForThirtySix.includes(position)) {
+        for (let item of roulette.extendedBet) {
+          if (Object.keys(item)[0] === "roulette__p-central-19-36") {
+            amountOfWin += (+Object.values(item)[0] * 2);
+            roulette.money += (+Object.values(item)[0] * 2);
+          }
+        }
+      } else if (roulette.values.valuesEven.includes(position)) {
+        for (let item of roulette.extendedBet) {
+          if (Object.keys(item)[0] === "roulette__p-central-second-even") {
+            amountOfWin += (+Object.values(item)[0] * 2);
+            roulette.money += (+Object.values(item)[0] * 2);
+          }
+        }
+      }
+
+      if (roulette.values.valuesOdd.includes(position)) {
+        for (let item of roulette.extendedBet) {
+          if (Object.keys(item)[0] === "roulette__p-central-second-odd") {
+            amountOfWin += (+Object.values(item)[0] * 2);
+            roulette.money += (+Object.values(item)[0] * 2);
+          }
+        }
+      } else if (roulette.values.red.includes(position)) {
+        for (let item of roulette.extendedBet) {
+          if (Object.keys(item)[0] === "roulette__p-central-second-red") {
+            amountOfWin += (+Object.values(item)[0] * 2);
+            roulette.money += (+Object.values(item)[0] * 2);
+          }
+        }
+      } else if (roulette.values.black.includes(position)) {
+        for (let item of roulette.extendedBet) {
+          if (Object.keys(item)[0] === "roulette__p-central-second-black") {
+            amountOfWin += (+Object.values(item)[0] * 2);
+            roulette.money += (+Object.values(item)[0] * 2);
+          }
+        }
+      }
+
       if (roulette.amountBet < amountOfWin) {
-        rouletteState.textContent = `Ставка - ${roulette.amountBet}, выигрыш - ${amountOfWin}`;
+        rouletteState.textContent = `Ставка - ${roulette.amountBet}, выигрыш - ${amountOfWin - roulette.amountBet}`;
       } else if (roulette.amountBet === amountOfWin) {
         rouletteState.textContent = `Вы ничего не выиграли и ничего не потеряли`;
       } else {
-        rouletteState.textContent = `Ставка - ${roulette.amountBet}, выигрыш - ${roulette.amountBet - amountOfWin}`;
+        rouletteState.textContent = `Ставка - ${roulette.amountBet}, проигрыш - ${roulette.amountBet - amountOfWin}`;
       }
 
       roulette.bet = [];
