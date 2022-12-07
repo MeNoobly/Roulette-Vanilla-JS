@@ -8,7 +8,7 @@
 
     const roulette = {
         
-        money: 100000, // все деньги
+        money: 1000000, // все деньги
         amountBet: 0, // сумма ставки
         bet: [], // ставка
         extendedBet: [],
@@ -388,21 +388,25 @@
             roulette.money += (+Object.values(item)[0] * 3);
           }
         }
-      } else if (roulette.values.valuesSecondRow.includes(position)) {
+      } 
+
+      if (roulette.values.valuesSecondRow.includes(position)) {
         for (let item of roulette.extendedBet) {
           if (Object.keys(item)[0] === "roulette__p-right-side-mid") {
             amountOfWin += (+Object.values(item)[0] * 3);
             roulette.money += (+Object.values(item)[0] * 3);
           }
         }
-      } else if (roulette.values.valuesThirdRow.includes(position)) {
+      } 
+
+      if (roulette.values.valuesThirdRow.includes(position)) {
         for (let item of roulette.extendedBet) {
           if (Object.keys(item)[0] === "roulette__p-right-side-down") {
             amountOfWin += (+Object.values(item)[0] * 3);
             roulette.money += (+Object.values(item)[0] * 3);
           }
         }
-      }
+      } 
 
       if (roulette.values.valuesFirstTwelve.includes(position)) {
         for (let item of roulette.extendedBet) {
@@ -411,21 +415,25 @@
             roulette.money += (+Object.values(item)[0] * 3);
           }
         }
-      } else if (roulette.values.valuesSecondTwelve.includes(position)) {
+      } 
+
+      if (roulette.values.valuesSecondTwelve.includes(position)) {
         for (let item of roulette.extendedBet) {
           if (Object.keys(item)[0] === "roulette__p-central-first-second") {
             amountOfWin += (+Object.values(item)[0] * 3);
             roulette.money += (+Object.values(item)[0] * 3);
           }
         }
-      } else if (roulette.values.valuesThirdTwelve.includes(position)) {
+      } 
+
+      if (roulette.values.valuesThirdTwelve.includes(position)) {
         for (let item of roulette.extendedBet) {
           if (Object.keys(item)[0] === "roulette__p-central-first-third") {
             amountOfWin += (+Object.values(item)[0] * 3);
             roulette.money += (+Object.values(item)[0] * 3);
           }
         }
-      }
+      } 
 
       if (roulette.values.valuesOneForEighteen.includes(position)) {
         for (let item of roulette.extendedBet) {
@@ -434,22 +442,26 @@
             roulette.money += (+Object.values(item)[0] * 2);
           }
         }
-      } else if (roulette.values.valuesNineteenForThirtySix.includes(position)) {
+      } 
+
+      if (roulette.values.valuesNineteenForThirtySix.includes(position)) {
         for (let item of roulette.extendedBet) {
           if (Object.keys(item)[0] === "roulette__p-central-19-36") {
             amountOfWin += (+Object.values(item)[0] * 2);
             roulette.money += (+Object.values(item)[0] * 2);
           }
         }
-      } else if (roulette.values.valuesEven.includes(position)) {
+      } 
+
+      if (roulette.values.valuesEven.includes(position)) {
         for (let item of roulette.extendedBet) {
           if (Object.keys(item)[0] === "roulette__p-central-second-even") {
             amountOfWin += (+Object.values(item)[0] * 2);
             roulette.money += (+Object.values(item)[0] * 2);
           }
         }
-      }
-
+      } 
+      
       if (roulette.values.valuesOdd.includes(position)) {
         for (let item of roulette.extendedBet) {
           if (Object.keys(item)[0] === "roulette__p-central-second-odd") {
@@ -457,14 +469,18 @@
             roulette.money += (+Object.values(item)[0] * 2);
           }
         }
-      } else if (roulette.values.red.includes(position)) {
+      } 
+
+      if (roulette.values.red.includes(position)) {
         for (let item of roulette.extendedBet) {
           if (Object.keys(item)[0] === "roulette__p-central-second-red") {
             amountOfWin += (+Object.values(item)[0] * 2);
             roulette.money += (+Object.values(item)[0] * 2);
           }
         }
-      } else if (roulette.values.black.includes(position)) {
+      } 
+
+      if (roulette.values.black.includes(position)) {
         for (let item of roulette.extendedBet) {
           if (Object.keys(item)[0] === "roulette__p-central-second-black") {
             amountOfWin += (+Object.values(item)[0] * 2);
@@ -474,11 +490,11 @@
       }
 
       if (roulette.amountBet < amountOfWin) {
-        rouletteState.textContent = `Ставка - ${roulette.amountBet}, выигрыш - ${amountOfWin - roulette.amountBet}`;
+        rouletteState.textContent = `Ставка - ${roulette.amountBet}, сумма выигрыша - ${amountOfWin}`;
       } else if (roulette.amountBet === amountOfWin) {
         rouletteState.textContent = `Вы ничего не выиграли и ничего не потеряли`;
       } else {
-        rouletteState.textContent = `Ставка - ${roulette.amountBet}, проигрыш - ${roulette.amountBet - amountOfWin}`;
+        rouletteState.textContent = `Ставка - ${roulette.amountBet}, потеряно - ${roulette.amountBet - amountOfWin}`;
       }
 
       roulette.bet = [];
@@ -487,7 +503,7 @@
       rouletteMoneyP.textContent = roulette.money;
     }
       
-    
+
     //функция очищения элементов, после прокрутки колеса
     function clearElements() {
       let rouletteBetP = document.querySelector(".roulette__money-bet");
