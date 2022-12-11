@@ -2,9 +2,7 @@
 
 (function() {
 
-
     // объект для рулетки
-
 
     const roulette = {
         
@@ -210,10 +208,7 @@
         },
     };
 
-
-
     // загатовка для колеса
-
 
     roulette.createRouletteApp();
 
@@ -238,7 +233,6 @@
     );
 
     prizes = prizes.reverse();
-    
 
     // создание нужных переменных
 
@@ -248,7 +242,7 @@
     const spinner = wheel.querySelector(".spinner");
     const trigger = wheel.querySelector(".btn-spin");
     const ticker = wheel.querySelector(".ticker");
-
+    const timerP = document.querySelector(".roulette__timer-p");
     // на сколько секторов нарезаем круг
     const prizeSlice = 360 / prizes.length;
     // на какое расстояние смещаем сектора друг относительно друга
@@ -258,7 +252,6 @@
     const selectedClass = "selected";
     // получаем все значения параметров стилей у секторов
     const spinnerStyles = window.getComputedStyle(spinner);
-
     // переменная для анимации
     let tickerAnim;
     // угол вращения
@@ -267,10 +260,12 @@
     let currentSlice = 0;
     // переменная для текстовых подписей
     let prizeNodes;
-
-
+    let timerID;
+    let timerID2;
+    let sec = 30;
+    
+    timerP.textContent = `Время до запуска колеса: ${sec}`;
     // все нужные функции
-
 
     // расставляем текст по секторамs
     const createPrizeNodes = () => {
@@ -311,12 +306,27 @@
 
     // создаём функцию, которая нарисует колесо в сборе
     const setupWheel = () => {
+      const timerP = document.querySelector(".roulette__timer-p");
       // сначала секторы
       createConicGradient();
       // потом текст
       createPrizeNodes();
       // а потом мы получим список всех призов на странице, чтобы работать с ними как с объектами
       prizeNodes = wheel.querySelectorAll(".prize");
+
+      timerID2 = setInterval(() => {
+        sec--;
+        if (sec === 0) {
+          timerP.textContent = "Пуск!";
+        } else {
+          timerP.textContent = `Время до запуска колеса: ${sec}`;
+        }
+       
+      }, 1000);
+
+      timerID = setInterval(() => {
+        timingFunction();
+      }, sec * 1000);
     };
 
     // определяем количество оборотов, которое сделает наше колесо
@@ -353,6 +363,9 @@
       }
       // запускаем анимацию
       tickerAnim = requestAnimationFrame(runTickerAnimation);
+
+      clearTimeout(timerID);
+      clearInterval(timerID2);
     };
 
     // функция выбора призового сектора
@@ -503,7 +516,6 @@
       rouletteMoneyP.textContent = roulette.money;
     }
       
-
     //функция очищения элементов, после прокрутки колеса
     function clearElements() {
       let rouletteBetP = document.querySelector(".roulette__money-bet");
@@ -515,14 +527,8 @@
       roulette.amountBet = 0; // очищаем сумму ставок
       
     }
-    // события кнопок
-
-
-    // отслеживаем нажатие на кнопку
-    trigger.addEventListener("click", () => {
-
-      // делаем её недоступной для нажатия
-      trigger.disabled = true;
+    
+    function timingFunction() {
       // задаём начальное вращение колеса
       rotation = Math.floor(Math.random() * 360 + spinertia(2000, 5000));
       // убираем прошлый приз
@@ -537,10 +543,15 @@
 
       // запускаем анимацию вращение
       runTickerAnimation();
-    });
+    }
+
+    // события кнопок
 
     // отслеживаем, когда закончилась анимация вращения колеса
     spinner.addEventListener("transitionend", () => {
+      const timerP = document.querySelector(".roulette__timer-p");
+      sec = 30;
+      timerP.textContent = `Время до запуска колеса: ${sec}`;
       // останавливаем отрисовку вращения
       cancelAnimationFrame(tickerAnim);
       // получаем текущее значение поворота колеса
@@ -551,9 +562,18 @@
       wheel.classList.remove(spinClass);
       // отправляем в CSS новое положение поворота колеса
       spinner.style.setProperty("--rotate", rotation);
-      // делаем кнопку снова активной
-      trigger.disabled = false;
       clearElements();
+      timerID2 = setInterval(() => {
+        sec--;
+        if (sec === 0) {
+          timerP.textContent = "Пуск!";
+        } else {
+          timerP.textContent = `Время до запуска колеса: ${sec}`;
+        }
+      }, 1000);
+      timerID = setInterval(() => {
+        timingFunction();
+      }, sec * 1000);
     });
 
 

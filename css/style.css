@@ -419,3 +419,11 @@ body {
     transform: scale(1);
   }
 }
+
+.roulette__timer-p {
+  display: flex;
+  color: white;
+  justify-content: center;
+  align-items: center;
+  font-size: 50px;
+}
