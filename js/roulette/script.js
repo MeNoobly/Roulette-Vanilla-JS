@@ -6,7 +6,7 @@
 
     const roulette = {
         
-        money: 1000000, // все деньги
+        money: 100000, // все деньги
         amountBet: 0, // сумма ставки
         bet: [], // ставка
         extendedBet: [],
@@ -151,8 +151,6 @@
           };
         },
 
-
-
         createRouletteApp() {
             // ищем DOM элементы
             let rouletteItems = document.querySelectorAll(".roulette__item");
@@ -236,11 +234,9 @@
 
     // создание нужных переменных
 
-
     // создаём переменные для быстрого доступа ко всем объектам на странице — блоку в целом, колесу, кнопке и язычку
     const wheel = document.querySelector(".deal-wheel");
     const spinner = wheel.querySelector(".spinner");
-    const trigger = wheel.querySelector(".btn-spin");
     const ticker = wheel.querySelector(".ticker");
     const timerP = document.querySelector(".roulette__timer-p");
     // на сколько секторов нарезаем круг
@@ -379,7 +375,6 @@
     function winOrLoose(position) {
       let rouletteMoneyP = document.querySelector(".roulette__money");
       let setValues = roulette.bet.map(item => +Object.keys(item)[0]);
-      let setOtherValues = roulette.extendedBet.map(item => +Object.keys(item)[0]);
       let rouletteState = document.querySelector(".roulette__bet-state");
       let amountOfWin = 0;
       
@@ -576,9 +571,7 @@
       }, sec * 1000);
     });
 
-
     // запуск 
-
 
     setupWheel();
 })(); 
