@@ -11,13 +11,27 @@
     <title>Black Jack</title>
   </head>
   <body>
-    <section class="section field__section">
-      <div class="croupier__field">
-        <div class="container">
-          <div class="card"></div>
-          <div class="card"></div>
+    <div class="container">
+      <section class="section">
+        <button class="start">Start</button>
+        <div class="field field__croupier">
+          <div class="card opacity-off"></div>
+          <div class="card opacity-off"></div>
         </div>
-      </div>
-    </section>
+        <div class="field field__deck">
+          <div class="card card__deck"></div>
+        </div>
+        <div class="field field__players">
+          <div class="players__cards">
+            <div class="card card__player opacity-off"></div>
+            <div class="card opacity-off"></div>
+          </div>
+          <div class="players__cards">
+            <div class="card card__player opacity-off"></div>
+            <div class="card opacity-off"></div>
+          </div>
+        </div>
+      </section>
+    </div>
   </body>
 </html>
