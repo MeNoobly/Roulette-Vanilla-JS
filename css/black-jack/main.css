@@ -14,11 +14,16 @@
     padding: 15px;
 }
 
-.card {
+.card,
+.card__deck {
     max-width: 155px;
     height: 220px;
     width: 100%;
     background-size: cover;
+}
+
+.card__deck {
+    background: url(../../img/black-jack/main-deck.png) center no-repeat;
 }
 
 .field {
@@ -42,7 +47,7 @@
 }
 
 .field__players {
-    width: 50%;
+    width: 70%;
     margin: 0 auto;
 }
 
@@ -55,7 +60,7 @@
 .card__player {
     position: absolute;
     top: 0;
-    left: 15%;
+    left: 20%;
 }
 
 .start {
@@ -69,10 +74,6 @@
 
 .start:hover {
     background-color: rgb(151, 143, 143);
-}
-
-.card__deck {
-    opacity: 1;
 }
 
 .opacity-on {

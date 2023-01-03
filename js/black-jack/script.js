@@ -4,6 +4,63 @@ const user = {
     money: 1000
 };
 
+const cardsValues = {
+    "2_club": 2,
+    "3_club": 3,
+    "4_club": 4,
+    "5_club": 5,
+    "6_club": 6,
+    "7_club": 7,
+    "8_club": 8,
+    "9_club": 9,
+    "10_club": 10,
+    "a_club": 11,
+    "j_club": 10,
+    "q_club": 10,
+    "k_club": 10,
+    "2_diamond": 2,
+    "3_diamond": 3,
+    "4_diamond": 4,
+    "5_diamond": 5,
+    "6_diamond": 6,
+    "7_diamond": 7,
+    "8_diamond": 8,
+    "9_diamond": 9,
+    "10_diamond": 10,
+    "a_diamond": 11,
+    "j_diamond": 10,
+    "q_diamond": 10,
+    "k_diamond": 10,
+    "2_spades": 2,
+    "3_spades": 3,
+    "4_spades": 4,
+    "5_spades": 5,
+    "6_spades": 6,
+    "7_spades": 7,
+    "8_spades": 8,
+    "9_spades": 9,
+    "10_spades": 10,
+    "a_spades": 11,
+    "j_spades": 10,
+    "q_spades": 10,
+    "k_spades": 10,
+    "2_heart": 2,
+    "3_heart": 3,
+    "4_heart": 4,
+    "5_heart": 5,
+    "6_heart": 6,
+    "7_heart": 7,
+    "8_heart": 8,
+    "9_heart": 9,
+    "10_heart": 10,
+    "a_heart": 11,
+    "j_heart": 10,
+    "q_heart": 10,
+    "k_heart": 10,
+
+};
+
+
 let startButton = document.querySelector(".start");
 
 startButton.addEventListener("click", start);
@@ -12,20 +69,29 @@ function start() {
     let arrayOfCards = document.querySelectorAll(".card");
     let id = 0;
     let timerId = setInterval(() => {
-        if (id === arrayOfCards.length - 1) {
+        if (id === arrayOfCards.length) {
+            play(1);
+            play(2);
+            play(3);
+            play(4);
             clearInterval(timerId);
+        } else if (id === 1) {
+            arrayOfCards[id].style = `background: url(../../img/black-jack/main-deck.png) center no-repeat;`;
+            arrayOfCards[id].classList.remove("opacity-off");
+            arrayOfCards[id].classList.add("opacity-on");
+        } else {
+            let randomCard = cardRandomise();
+            arrayOfCards[id].style = `background: url(../../img/black-jack/cards/${randomCard}.png) center no-repeat;`;
+            arrayOfCards[id].classList.remove("opacity-off");
+            arrayOfCards[id].classList.add("opacity-on");
         }
-        let randomCard = cardRandomise();
-        arrayOfCards[id].style = `background: url(../../img/black-jack/cards/${randomCard}.png) center no-repeat;`;
-        arrayOfCards[id].classList.remove("opacity-off");
-        arrayOfCards[id].classList.add("opacity-on");
-       
+
         id++;
-    }, 500);
+    }, 1000);
 }
 
 function cardRandomise() {
-    let randomNumber = Math.round(Math.random() * 52) + 1;
+    let randomNumber = Math.round(Math.random() * 51) + 1;
     switch(randomNumber) {
         case 1:
             return "2_club";
@@ -132,4 +198,12 @@ function cardRandomise() {
         case 49:
             return "k_spades";
     }
+}
+
+function play(player) {
+    let arrayOfCards = document.querySelectorAll(".card");
+    let firstCard = arrayOfCards[player * 2].style.backgroundImage.split("/")[5].split(".")[0];
+    let secondCard = arrayOfCards[player * 2 + 1].style.backgroundImage.split("/")[5].split(".")[0];
+    let summaryOfCardsValues = cardsValues[firstCard.toString()] + cardsValues[secondCard.toString()];
+    console.log(summaryOfCardsValues);
 }
