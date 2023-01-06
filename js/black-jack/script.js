@@ -4,6 +4,11 @@ const user = {
     money: 1000
 };
 
+const croupier = {
+    firstCard: "",
+    secondCard: "",
+};
+
 const cardsValues = {
     "2_club": 2,
     "3_club": 3,
@@ -67,25 +72,25 @@ startButton.addEventListener("click", start);
 
 function start() {
     let arrayOfCards = document.querySelectorAll(".card");
+    
     let id = 0;
     let timerId = setInterval(() => {
         if (id === arrayOfCards.length) {
+            play(0);
             play(1);
-            play(2);
-            play(3);
-            play(4);
             clearInterval(timerId);
         } else if (id === 1) {
             arrayOfCards[id].style = `background: url(../../img/black-jack/main-deck.png) center no-repeat;`;
-            arrayOfCards[id].classList.remove("opacity-off");
-            arrayOfCards[id].classList.add("opacity-on");
         } else {
             let randomCard = cardRandomise();
+            let usersInfo = document.querySelectorAll(".user__info");
+            let usersAction = document.querySelectorAll(".user__action");
             arrayOfCards[id].style = `background: url(../../img/black-jack/cards/${randomCard}.png) center no-repeat;`;
-            arrayOfCards[id].classList.remove("opacity-off");
-            arrayOfCards[id].classList.add("opacity-on");
+            if (id > 2 && id % 2 !== 0) {
+                usersAction[(id - 3) / 2].classList.remove("opacity-off");
+                usersAction[(id - 3) / 2].classList.add("opacity-on");
+            }
         }
-
         id++;
     }, 1000);
 }
@@ -202,8 +207,19 @@ function cardRandomise() {
 
 function play(player) {
     let arrayOfCards = document.querySelectorAll(".card");
-    let firstCard = arrayOfCards[player * 2].style.backgroundImage.split("/")[5].split(".")[0];
-    let secondCard = arrayOfCards[player * 2 + 1].style.backgroundImage.split("/")[5].split(".")[0];
-    let summaryOfCardsValues = cardsValues[firstCard.toString()] + cardsValues[secondCard.toString()];
-    console.log(summaryOfCardsValues);
+
+    if (player === 0) {
+        let randomCard = cardRandomise();
+        croupier.firstCard = arrayOfCards[0].style.backgroundImage.split("/")[5].split(".")[0];
+        croupier.secondCard = randomCard;
+        let sumOfCroupierCards = cardsValues[croupier.firstCard] + cardsValues[croupier.secondCard];
+        if (sumOfCroupierCards === 21) {
+            arrayOfCards[1].style = `background: url(../../img/black-jack/cards/${croupier.secondCard}.png) center no-repeat;`;
+            console.log("croupier win");
+        }
+    } else {
+        let firstCard = arrayOfCards[player * 2].style.backgroundImage.split("/")[5].split(".")[0];
+        let secondCard = arrayOfCards[player * 2 + 1].style.backgroundImage.split("/")[5].split(".")[0];
+        let summaryOfCardsValues = cardsValues[firstCard.toString()] + cardsValues[secondCard.toString()];
+    }
 }
