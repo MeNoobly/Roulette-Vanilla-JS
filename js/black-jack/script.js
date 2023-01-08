@@ -1,5 +1,13 @@
 ﻿"use strict";
 
+class User {
+    constructor(name, money) {
+        this.name = name;
+        this.money = money;
+    }
+}
+
+
 const user = {
     money: 1000
 };
