@@ -1,33 +1,40 @@
 ﻿"use strict";
 
 class Croupier {
-    start() {
-        let arrayOfCards = document.querySelectorAll(".card");
-        this.users[0].create(this.users);
-        let id = 0;
-        let timerId = setInterval(() => {
-            arrayOfCards = document.querySelectorAll(".card");
-            if (id === arrayOfCards.length) {
-                this.users.forEach(user => user.play(user.number, this));
-                clearInterval(timerId);
-            } else if (id === 1) {
-                arrayOfCards[id].style = `background: url(../../img/black-jack/main-deck.png) center no-repeat;`;
-            } else {
-                let randomCard = this.cardRandomise();
-                let usersInfo = document.querySelectorAll(".user__info");
-                let usersAction = document.querySelectorAll(".user__action");
-                arrayOfCards[id].style = `background: url(../../img/black-jack/cards/${randomCard}.png) center no-repeat;`;
-                if (id > 2 && id % 2 !== 0) {
-                    usersAction[(id - 3) / 2].classList.remove("opacity-off");
-                    usersAction[(id - 3) / 2].classList.add("opacity-on");
-                }
-            }
-            id++;
-        }, 1000);
+    // add constructor
+    constructor() {
+        this.users = [];
     }
 
+    // function for start game
+    start() {
+        (new User()).create(this.users); // add users on deck
+        let cardsId = 0; // id of cards
+        let timerId = setInterval(() => {
+            let arrayOfCards = document.querySelectorAll(".card"); // find all cards
+            if (cardsId === arrayOfCards.length) { // if all cards are passed
+                this.users.forEach(user => user.play(user.number, this)); // all users start play
+                clearInterval(timerId); // end this interval
+            } else if (cardsId === 1) { // for second card of croupier
+                arrayOfCards[cardsId].style = `background: url(../../img/black-jack/main-deck.png) center no-repeat;`; // this card is closed
+            } else {
+                let usersAction = document.querySelectorAll(".user__action"); // find actions of users
+                let randomCard = this.cardRandomise(); // get random card
+
+                arrayOfCards[cardsId].style = `background: url(../../img/black-jack/cards/${randomCard}.png) center no-repeat;`; // set random card
+
+                if (cardsId > 2 && cardsId % 2 !== 0) {
+                    usersAction[(cardsId - 3) / 2].classList.remove("opacity-off"); // show users action
+                }
+            }
+            cardsId++; // inkrement
+        }, 1000); // interval for fill field with players
+    }
+
+    // function to get random card
     cardRandomise() {
-        let randomNumber = Math.round(Math.random() * 51) + 1;
+        let randomNumber = Math.round(Math.random() * 51) + 1; // get random number (1 for 52)
+        // get random card from deck
         switch(randomNumber) {
             case 1:
                 return "2_club";
@@ -53,117 +60,121 @@ class Croupier {
                 return "q_club";
             case 12:
                 return "k_club";
-            case 52:
-                return "a_club";
             case 13:
-                return "2_diamond";
+                return "a_club";
             case 14:
-                return "3_diamond";
+                return "2_diamond";
             case 15:
-                return "4_diamond";
+                return "3_diamond";
             case 16:
-                return "5_diamond";
+                return "4_diamond";
             case 17:
-                return "6_diamond";
+                return "5_diamond";
             case 18:
-                return "7_diamond";
+                return "6_diamond";
             case 19:
-                return "8_diamond";
+                return "7_diamond";
             case 20:
-                return "9_diamond";
+                return "8_diamond";
             case 21:
-                return "10_diamond";
+                return "9_diamond";
             case 22:
-                return "j_diamond";
+                return "10_diamond";
             case 23:
-                return "q_diamond";
-            case 50:
-                return "k_diamond";
-            case 51:
-                return "a_diamond";
+                return "j_diamond";
             case 24:
-                return "2_heart";
+                return "q_diamond";
             case 25:
-                return "3_heart";
+                return "k_diamond";
             case 26:
-                return "4_heart"; 
+                return "a_diamond";
             case 27:
-                return "5_heart";
+                return "2_heart";
             case 28:
-                return "6_heart";
+                return "3_heart";
             case 29:
-                return "7_heart";
+                return "4_heart"; 
             case 30:
-                return "8_heart";
+                return "5_heart";
             case 31:
-                return "9_heart";
+                return "6_heart";
             case 32:
-                return "10_heart";
+                return "7_heart";
             case 33:
-                return "j_heart";
+                return "8_heart";
             case 34:
-                return "q_heart";
+                return "9_heart";
             case 35:
-                return "k_heart";
+                return "10_heart";
             case 36:
-                return "a_heart";
+                return "j_heart";
             case 37:
-                return "2_spades";
+                return "q_heart";
             case 38:
-                return "a_spades";
+                return "k_heart";
             case 39:
-                return "3_spades";
+                return "a_heart";
             case 40:
-                return "4_spades";
+                return "2_spades";
             case 41:
-                return "5_spades";
+                return "3_spades";
             case 42:
-                return "6_spades";
+                return "4_spades";
             case 43:
-                return "7_spades";
+                return "5_spades";
             case 44:
-                return "8_spades";
+                return "6_spades";
             case 45:
-                return "9_spades";
+                return "7_spades";
             case 46:
-                return "10_spades"; 
+                return "8_spades";
             case 47:
-                return "j_spades";
+                return "9_spades";
             case 48:
-                return "q_spades";
+                return "10_spades"; 
             case 49:
+                return "j_spades";
+            case 50:
+                return "q_spades";
+            case 51:
                 return "k_spades";
+            case 52:
+                return "a_spades";
         }
     }
 }
 
 class User {
+    // add constructor
     constructor(number, name, money) {
         this.number = number;
         this.name = name;
         this.money = money;
     }
 
-    play(player, croupier) {
-        let arrayOfCards = document.querySelectorAll(".card");
+    // function for play
+    // play(player, croupier) {
+    //     let arrayOfCards = document.querySelectorAll(".card");
     
-        if (player === 0) {
-            let randomCard = croupier.cardRandomise();
-            croupier.firstCard = arrayOfCards[0].style.backgroundImage.split("/")[5].split(".")[0];
-            croupier.secondCard = randomCard;
-            let sumOfCroupierCards = cardsValues[croupier.firstCard] + cardsValues[croupier.secondCard];
-            if (sumOfCroupierCards === 21) {
-                arrayOfCards[1].style = `background: url(../../img/black-jack/cards/${croupier.secondCard}.png) center no-repeat;`;
-                console.log("croupier win");
-            }
-        } else {
-            let firstCard = arrayOfCards[player * 2].style.backgroundImage.split("/")[5].split(".")[0];
-            let secondCard = arrayOfCards[player * 2 + 1].style.backgroundImage.split("/")[5].split(".")[0];
-            let summaryOfCardsValues = cardsValues[firstCard.toString()] + cardsValues[secondCard.toString()];
-        }
-    }
+    //     if (player === 0) {
+    //         let randomCard = croupier.cardRandomise();
+    //         croupier.firstCard = arrayOfCards[0].style.backgroundImage.split("/")[5].split(".")[0];
+    //         croupier.secondCard = randomCard;
+    //         let sumOfCroupierCards = cardsValues[croupier.firstCard] + cardsValues[croupier.secondCard];
+    //         if (sumOfCroupierCards === 21) {
+    //             arrayOfCards[1].style = `background: url(../../img/black-jack/cards/${croupier.secondCard}.png) center no-repeat;`;
+    //             console.log("croupier win");
+    //         }
+    //     } else {
+    //         let firstCard = arrayOfCards[player * 2].style.backgroundImage.split("/")[5].split(".")[0];
+    //         let secondCard = arrayOfCards[player * 2 + 1].style.backgroundImage.split("/")[5].split(".")[0];
+    //         let summaryOfCardsValues = cardsValues[firstCard.toString()] + cardsValues[secondCard.toString()];
+    //     }
+    // }
 
+    // function for create user and add user in DOM
     create(users) {
+        // create field for each users
         for (let user of users) {
             let fieldPlayersDiv = document.querySelector(".field__players");
             let userDiv = document.createElement("div");
@@ -217,6 +228,7 @@ class User {
     }
 }
 
+// object with all values of cards
 const cardsValues = {
     "2_club": 2,
     "3_club": 3,
@@ -273,12 +285,15 @@ const cardsValues = {
 
 };
 
-let startButton = document.querySelector(".start");
-let croupier = new Croupier();
-croupier.users = [];
-startButton.addEventListener("click", croupier.start.bind(croupier));
+let startButton = document.querySelector(".start"); // found start button
+let croupier = new Croupier(); // create new croupier
 
-let User1 = new User(0, "1", 20000);
-let User2 = new User(1, "2", 200000);
-croupier.users.push(User1, User2);
+startButton.addEventListener("click", croupier.start.bind(croupier)); // bind function "start" on click
+
+// add some users
+let User1 = new User(0, "Nick", 100000);
+let User2 = new User(1, "Bogdan", 100000);
+let User3 = new User(2, "Dan", 100000);
+
+croupier.users.push(User1, User2, User3); // add users in croupier list
 
